@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<body>
-
 <%- include partials/_header.ejs %>
-    <!-- Write EJS code here to display shortened links -->
-<p><%= urls %></p>
 
+<body style = "background-color:#93B874; padding:50px; font-size:30px">
+  <h1> My URLs </h1>
+  <table cellspacing="10px">
+  <% Object.keys(urls).forEach(function(key){ %>
+    <tr>
+      <td><%= urls[key] %><t></td>
+      <td> <b><%= key %></b> </td> <td> <form method="POST" action="/urls/<%= key %>?_method=DELETE"> <button type="submit"; style="height:30px; margin-bottom:5px"> Delete URL</button></form></button></td>
+  </tr>
+<% }); %>
+</table>
 </body>
+
+<p style="color: blue; font-size: 35">
+  <a href="/urls/new">Shorten new URL</a>
+</p>
+
 </html>

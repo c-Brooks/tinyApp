@@ -3,7 +3,8 @@
 // ----------------------------------------------------------- //
 
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT || 8080; // default port 8080
 
@@ -17,25 +18,47 @@ var urlDatabase = {
   '9sm5xK': "http://www.google.com"
 };
 
-
+app.use(methodOverride('_method'));
+/*
+app.use(methodOverride(function(req, res){
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method
+    delete req.body._method
+    return method
+  }
+}));
+*/
 
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
+
+
+// HOMEPAGE
+app.get("/urls", (req, res) => {
+  res.render("urls_index", {urls: urlDatabase});
+});
+
+// CREATE NEW
 app.get("/urls/new", (req, res) => {
-  //let templateVars = { shortURL: req.params.id };
   res.render("urls_new");
 });
 
 app.post('/urls/', (req, res) =>{
   urlDatabase[randomString()] = req.body.longURL;
-  console.log(urlDatabase);
-  res.send(req.body);
-  res.redirect('/urls.json')
-})
+  res.redirect('/urls')
+});
 
+// DELETE
+app.delete('/urls/:id', (req, res) => {
+  delete urlDatabase[req.params.id];
+  res.redirect('/urls');
+  });
+
+// GO TO URL
 app.get('/u/:shortURL', (req, res) => {
   var longURL;
   const sURL = req.params.shortURL
@@ -47,8 +70,8 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 
-app.get("/urls/:id", (req, res) => {
-  let templateVars = { URL: req.params.id };
+app.get("/url/:id", (req, res) => {
+  let templateVars = { URL: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
 });
 
