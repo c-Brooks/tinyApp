@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include partials/_header.ejs %>
+<head>
+  <style type='text/css'>
+    body {
+      background-color: #93B874;
+      width: auto;
+    }
+
+    #divMain{
+      margin: auto;
+      padding: auto;
+      width: 1024px;
+      text-align: left;
+    }
+
+    input.style {
+      background-color: #d6f5d6;
+      font-size:         20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="divMain">
+    <table cellpadding='15' border='1'>
+      <tr style="font-size: 40px" align="center">
+        <td> <i> Shortened URL </i> </td>
+        <td> <i> Original Url  </i> </td>
+      </tr>
+      <tr style="font-size: 30px" align="center">
+        <td style="font-weight: bold">
+          <a href="/u/<%= shortURL %>"> localhost:8080/u/<%= shortURL %> </a>
+        </td>
+        <td>
+          <form action="/urls/<%= shortURL %>/?_method=put" method="POST">
+            <input size = 30px id = "longURL" class='style' type="text" name = "longURL" value = <%= longURL %>> <br>
+            <input type="submit" value="Submit">
+            </form>
+          </td>
+        </tr>
+      </table>
+      </div>
+  </body>
+</html>
