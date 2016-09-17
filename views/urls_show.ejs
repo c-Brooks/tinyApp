@@ -31,11 +31,11 @@
       </tr>
       <tr style="font-size: 30px" align="center">
         <td style="font-weight: bold">
-          <a href="/u/<%= shortURL %>"> localhost:8080/u/<%= shortURL %> </a>
+          <a href="/u/<%= urls.shortURL %>"> localhost:8080/u/<%= urls.shortURL %> </a>
         </td>
         <td>
-          <form action="/urls/<%= shortURL %>/?_method=put" method="POST">
-            <input size = 30px id = "longURL" class='style' type="text" name = "longURL" value = <%= longURL %>> <br>
+          <form action="/urls/<%= urls.shortURL %>/?_method=put" method="POST">
+            <input size = 30px id = "longURL" class='style' type="text" name = "longURL" value = <%= urls.longURL %>> <br>
             <input type="submit" value="Submit">
             </form>
           </td>
