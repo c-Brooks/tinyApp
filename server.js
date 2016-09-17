@@ -36,6 +36,10 @@ MongoClient.connect(MONGODB_URI, function(err, database1) {
 // ----------------------------------------------------------- //
 
 
+// REDIRECT
+app.get('/', (req, res) => {
+  res.redirect('/urls/new')
+  });
 
 // SHOW ALL
 app.get('/urls', (req, res) => {
