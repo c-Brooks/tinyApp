@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include partials/_header.ejs %>
+  <%- include partials/_header.ejs %>
 
-<body style = "background-color:#93B874; padding:50px; font-size:30px">
-  <h1> My URLs </h1>
-  <table cellspacing="10px">
-  <% Object.keys(urls).forEach(function(key){ %>
-    <tr>
-      <td><%= urls[key] %><t></td>
-      <td> <b><%= key %></b> </td>
-      <td> <form method="GET" action="/urls/<%= key %>"> <button type="submit"; style="height:30px; margin-bottom:5px"> EDIT </button></form></td>
-      <td><form method="POST" action="/urls/<%= key %>?_method=DELETE"> <button type="submit"; style="height:30px; margin-bottom:5px"> DELETE </button></form></td>
-  </tr>
-<% }); %>
-</table>
-</body>
+  <body style = "background-color:#93B874; padding:50px; font-size:30px" link=black>
+    <h1> My URLs </h1>
+    <table cellspacing="10px">
+      <% Object.keys(urls).forEach(function(i){ %>
+        <tr>
+          <td>   <%= urls[i].longURL %>  </td>
+          <td> <a href="/u/<%= urls[i].shortURL %>" target="_blank"> <b> localhost:8080/u/<%= urls[i].shortURL %> </b> </a> </td>
+          <td>
+            <form method="GET" action="/urls/<%= urls[i].shortURL %>">
+            <button type="submit"; style="height:30px; margin-bottom:5px"> EDIT </button></form>
+          </td>
+          <td>
+            <form method="POST" action="/urls/<%= urls[i].shortURL %>?_method=DELETE">
+            <button type="submit"; style="height:30px; margin-bottom:5px"> DELETE </button></form>
+          </td>
+        </tr>
+      <% }); %>
+    </table>
+  </body>
 
-<p style="color: blue; font-size: 35">
-  <a href="/urls/new">Shorten new URL</a>
-</p>
+  <p style="color: blue; font-size: 35">
+    <a href="/urls/new"> Shorten new URL </a>
+  </p>
 </html>
