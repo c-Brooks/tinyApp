@@ -8,7 +8,6 @@ const methodOverride = require('method-override');
 const app = express();
 
 const PORT = process.env.PORT || 8080; // default port 8080
-const database = require('./database.js')
 app.set('view engine', 'ejs');
 
 app.use(express.static('views'));
@@ -90,11 +89,8 @@ app.put('/urls/:id', (req, res) => {
 
 // GO TO URL
 app.get('/u/:id', (req, res) => {
-  console.log("id: ", req.params.id)
-  console.log("res body: ", res.body)
-  db.collection('test').find( {'shortURL': req.params.id.shortURL}, (err, result) => {
-   //res.redirect(result)
-   console.log(result);
+  db.collection('test').findOne( {'shortURL': req.params.id}, (err, result) => {
+   res.redirect(result.longURL);
   });
 });
 
