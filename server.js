@@ -12,12 +12,6 @@ app.set('view engine', 'ejs');
 
 app.use(express.static('views'));
 app.use(bodyParser.urlencoded());
-
-var urlDatabase = {
-  'b2xVn2': 'http://www.lighthouselabs.ca',
-  '9sm5xK': 'http://www.google.com'
-};
-
 app.use(methodOverride('_method'));
 
 
@@ -25,16 +19,13 @@ const MongoClient = require("mongodb").MongoClient;
 const MONGODB_URI = "mongodb://127.0.0.1:27017/url_shortener";
 console.log(`Connecting to MongoDB running at: ${MONGODB_URI}`);
 
-
 var db;
 
-
 MongoClient.connect(MONGODB_URI, function(err, database1) {
-  //const collection = database.collection('test');
   if (err) return console.log(err);
   db = database1;
-  app.listen(8080, () => {
-    console.log('listening on 8080');
+  app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`);
   });
 });
 
@@ -49,8 +40,7 @@ MongoClient.connect(MONGODB_URI, function(err, database1) {
 // SHOW ALL
 app.get('/urls', (req, res) => {
   db.collection('test').find().toArray( (err, result) => {
-    console.log(result);
-     res.render('urls_index', {urls: result});
+    res.render('urls_index', {urls: result});
   });
 });
 
@@ -69,32 +59,11 @@ var shortURL = randomString();
 
 // DELETE
 app.delete('/urls/:id', (req, res) => {
-  console.log(req.params.id);
   db.collection('test').removeOne({shortURL: req.params.id});
   res.redirect('/urls');
   });
 
-
-// PUT
-app.put('/urls/:id', (req, res) => {
-  urlDatabase[req.params.id] = req.body.longURL;
-  res.redirect('/urls')
-
-  db.collection('test').updateOne( {'shortURL': req.params.id},
-    {$set:{'longURL': req.body.longURL}}, (err, result) => {
-    res.render('urls_show', {urls: result[0]});
-  });
-});
-
-
-// GO TO URL
-app.get('/u/:id', (req, res) => {
-  db.collection('test').findOne( {'shortURL': req.params.id}, (err, result) => {
-   res.redirect(result.longURL);
-  });
-});
-
-// SHOW INDIVIDUAL
+// SHOW ONE URL
 app.get('/urls/:id', (req, res) => {
   var shortURL = req.params.id;
   db.collection('test').findOne({'shortURL': shortURL}, (err, result) => {
@@ -102,9 +71,29 @@ app.get('/urls/:id', (req, res) => {
     });
   });
 
+// EDIT ONE URL
+app.put('/urls/:id', (req, res) => {
+
+  db.collection('test').updateOne( {'shortURL': req.params.id},
+    {$set:{'longURL': req.body.longURL}}, (err, result) => {
+      res.redirect('/urls')
+  });
+});
 
 
+// REDIRECT TO LONG URL
+app.get('/u/:id', (req, res) => {
+  db.collection('test').findOne( {'shortURL': req.params.id}, (err, result) => {
+// If address does not begin with http://, add it in
+    if(!/^((http|https|ftp):\/\/)/.test(result.longURL)) {
+      result.longURL = "http://" + result.longURL;
+    }
+    console.log(result.longURL);
+    res.redirect(result.longURL);
+  });
+});
 
+// Creating a random string for use as the ('''''''unique'''''''') shortLink
 function randomString() {
   const baseNum = 36, length = 6
   return Math.round((Math.pow(baseNum, length-1) - Math.random() *

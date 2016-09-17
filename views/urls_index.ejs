@@ -1,3 +1,5 @@
+<!-- INDEX - This page displays all of the links -->
+
 <!DOCTYPE html>
 <html lang="en">
   <%- include partials/_header.ejs %>
@@ -8,7 +10,9 @@
       <% Object.keys(urls).forEach(function(i){ %>
         <tr>
           <td>   <%= urls[i].longURL %>  </td>
-          <td> <a href="/u/<%= urls[i].shortURL %>" target="_blank"> <b> localhost:8080/u/<%= urls[i].shortURL %> </b> </a> </td>
+          <td> <a href="/u/<%= urls[i].shortURL %>" target="_blank">
+                <b> localhost:8080/u/<%= urls[i].shortURL %> </b> </a>
+          </td>
           <td>
             <form method="GET" action="/urls/<%= urls[i].shortURL %>">
             <button type="submit"; style="height:30px; margin-bottom:5px"> EDIT </button></form>
