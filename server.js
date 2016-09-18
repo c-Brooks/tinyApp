@@ -2,6 +2,7 @@
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
@@ -16,7 +17,7 @@ app.use(methodOverride('_method'));
 
 
 const MongoClient = require("mongodb").MongoClient;
-const MONGODB_URI = "mongodb://127.0.0.1:27017/url_shortener";
+const MONGODB_URI = process.env.MONGODB_URI;//"mongodb://127.0.0.1:27017/url_shortener";
 console.log(`Connecting to MongoDB running at: ${MONGODB_URI}`);
 
 var db;

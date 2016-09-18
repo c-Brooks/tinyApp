@@ -1,4 +1,4 @@
-  {
+{
   "name": "tiny-app",
   "version": "1.0.0",
   "description": "A bit.ly-like URL shortener",
@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "dotenv": "^2.0.0",
     "ejs": "^2.5.2",
     "express": "^4.14.0",
     "method-override": "^2.3.6",
