@@ -5,6 +5,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const methodOverride = require('method-override');
 const app = express();
 
@@ -14,7 +15,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('views'));
 app.use(bodyParser.urlencoded());
 app.use(methodOverride('_method'));
-
+app.use(cookieParser());
 
 const MongoClient = require("mongodb").MongoClient;
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -36,25 +37,45 @@ MongoClient.connect(MONGODB_URI, function(err, database1) {
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
+app.post('/login', (req, res) => {
+  res.cookie('userName', req.body.userName, {maxAge: 900000, httpOnly: true});
+  res.redirect('/');
+});
+
+app.post('/logout', (req, res) => {
+  res.clearCookie('userName');
+  res.redirect('/');
+});
+
+
+
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
+
 
 // REDIRECT
 app.get('/', (req, res) => {
+  console.log('Cookies: ', req.cookies)
   res.redirect('/urls/new')
   });
 
 // SHOW ALL
 app.get('/urls', (req, res) => {
   db.collection('test').find().toArray( (err, result) => {
-    res.render('urls_index', {urls: result});
+    res.render('urls_index', {urls: result, userName: req.cookies.userName});
   });
 });
 
 // CREATE NEW
 app.get('/urls/new', (req, res) => {
-  res.render('urls_new');
+
+  res.render('urls_new', {userName: req.cookies['userName']});
 });
 
-app.post('/urls/', (req, res) => {
+app.post('/urls', (req, res) => {
 var shortURL = randomString();
   db.collection('test').insert({ shortURL: shortURL, longURL: req.body.longURL },  function(err) {
     if (err) return res.redirect('/new');
@@ -72,13 +93,12 @@ app.delete('/urls/:id', (req, res) => {
 app.get('/urls/:id', (req, res) => {
   var shortURL = req.params.id;
   db.collection('test').findOne({'shortURL': shortURL}, (err, result) => {
-    res.render('urls_show', {urls: result});
+    res.render('urls_show', {urls: result, userName: req.cookies['userName']});
     });
   });
 
 // EDIT ONE URL
 app.put('/urls/:id', (req, res) => {
-
   db.collection('test').updateOne( {'shortURL': req.params.id},
     {$set:{'longURL': req.body.longURL}}, (err, result) => {
       res.redirect('/urls')

@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <%- include partials/_header.ejs %>
 <head>
   <style type='text/css'>
@@ -33,7 +34,7 @@
       </tr>
       <tr style="font-size: 30px" align="center">
         <td style="font-weight: bold">
-          <a href="/u/<%= urls.shortURL %>"> localhost:8080/u/<%= urls.shortURL %> </a>
+          <a href="/u/<%= urls.shortURL %>"> s:8080/u/<%= urls.shortURL %> </a>
         </td>
         <td>
           <form action="/urls/<%= urls.shortURL %>/?_method=put" method="POST">

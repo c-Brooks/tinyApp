@@ -2,9 +2,18 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <% include partials/_header %>
 
-  <body style="font-size:60px; padding:50px; background-color:#93B874">
+  <% include partials/_header.ejs %>
+
+  <style type="text/css">
+    body {
+      font-size:60px;
+      padding:50px;
+      background-color:#93B874
+    }
+  </style>
+
+  <body>
     <p style= "margin-top: 100px">
       <form action="/urls" method="POST" style="margin:150px;">
         <label for="longURL"> Enter a URL: </label>

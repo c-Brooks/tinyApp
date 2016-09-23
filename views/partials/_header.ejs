@@ -1,6 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+
   <header style="font-size:70px; padding: 10px">
-    TinyApp - The World's Best Website
-  </header>
-</html>
+    TinyApp - The World's Best Website <br>
+    <h1 style="float: right; font-size: 20px">
+
+    <% if (userName) { %>
+    Currently logged in as: <%= userName %>
+      <form action="/logout" method="POST">
+        <input style="float:right" type="submit" value="Logout">
+      </form>
+    <% } else { %>
+      <form action="/login" method="POST">
+        <input type="text" name="userName">
+        <input type="submit" value="Login">
+      </form>
+    <% } %>
+    <br>
+  </h1>
+</header>
