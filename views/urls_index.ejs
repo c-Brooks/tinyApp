@@ -12,7 +12,7 @@
         <tr>
           <td>   <%= urls[i].longURL %>  </td>
           <td> <a href="/u/<%= urls[i].shortURL %>" target="_blank">
-                <b> localhost:8080/u/<%= urls[i].shortURL %> </b> </a>
+                <b> <%= urls[i].shortURL %> </b> </a>
           </td>
           <td>
             <form method="GET" action="/urls/<%= urls[i].shortURL %>">
